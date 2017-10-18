@@ -1,0 +1,8 @@
+{{#each threads}}
+{{!-- <p>{{this.description}}| {{this._id}}</p> --}}
+<a href={{this.id}}>{{this.question}}</a>
+{{!-- <form method="POST" action= `${{{this.id}}}`>
+  <label for="animalType">{{this.description}}</label>
+  <input id="animalType" type="submit">
+</form> --}}
+{{/each}}

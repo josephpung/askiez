@@ -1,0 +1,13 @@
+<p>{{data.question}}</p>
+<p>{{data.description}}</p>
+
+
+<form method="POST" action="/addAnswer">
+  <label for="animalType">Title</label>
+  <input type="hidden" name="id"  value= {{data._id}}>
+  <input type="text" name="type">
+  <br><br>
+  <textarea name="userinput" rows="4" cols="50"></textarea>
+
+  <input id="animalType" type="submit">
+</form>
