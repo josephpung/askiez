@@ -1,6 +1,28 @@
-<p>{{data.question}}</p>
-<p>{{data.description}}</p>
 
+{{!-- <div class="buttons">
+<button class="up" data={{data._id}}>Upvote</button>
+<p id={{data._id}} >{{data.totalVotes}}</p>
+<button class="down" data={{data._id}}>Downvote</button>
+</div>
+
+<p>{{data.question}}</p>
+<p>{{data.description}}</p> --}}
+
+<table>
+  <tr>
+    <td><div class="buttons">
+    <button class="up" data={{data._id}}>Upvote</button>
+    <p id={{data._id}} >{{data.totalVotes}}</p>
+    <button class="down" data={{data._id}}>Downvote</button>
+    </div></td>
+    <td><p>{{data.question}}</p>
+    <p>{{data.description}}</p></td>
+  </tr>
+  <tr>
+    <td>.</td>
+    <td>ANSWERS COME HERE</td>
+  </tr>
+</table>
 
 <form method="POST" action="/addAnswer">
   <label for="animalType">Title</label>

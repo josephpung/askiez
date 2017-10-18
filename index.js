@@ -28,10 +28,6 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 
 //testing connection
-app.get("/", (req,res)=>{
-
-  res.send("testing")
-})
 app.get("/questions",(req,res)=>{
   res.render("questions")
 })
@@ -41,7 +37,7 @@ app.get("/landingPage", (req,res)=>{
   res.render('landingPage')
 })
 
-app.get("/home", (req,res)=>{
+app.get("/", (req,res)=>{
   Thread.find({}, function (err, data) {
     if (err) {
       console.log(err)
@@ -113,7 +109,49 @@ app.post('/addAnswer', function (req,res) {
     result.save()
   })
 })
+/////////////////////////////////////
 
+app.post("/upvote", function(req, res){
+
+
+  var inc = parseFloat(req.body.current)
+  console.log(inc,"CurrentNumIndex.js");
+   res.setHeader("Content-Type", "application/json");
+   inc += parseFloat(req.body.changeBy);
+   res.send(JSON.stringify(inc))
+   console.log(req.body)
+   Thread.findByIdAndUpdate(req.body.obj, { $set: { totalVotes: inc }}, (err, output)=> {
+  if (err) console.log(err);
+    console.log(output);
+});
+
+})
+app.post("/downvote", function(req, res){
+
+
+  var dec = parseFloat(req.body.current)
+   res.setHeader("Content-Type", "application/json");
+   dec -= parseFloat(req.body.changeBy);
+   res.send(JSON.stringify(dec))
+   console.log(req.body)
+   Thread.findByIdAndUpdate(req.body.obj, { $set: { totalVotes: dec }}, (err, output)=> {
+  if (err) console.log(err);
+    console.log(output);
+});
+
+})
+
+ function findVotes(id){
+   Thread.findById(id,(err, result)=>{
+     if (err){
+       console.log(err);
+     }
+     return result.totalVotes
+
+
+   })
+ }
+/////////////////////////////////////
 
 app.post('/addQuestions', function (req, res) {
 
@@ -122,7 +160,8 @@ app.post('/addQuestions', function (req, res) {
     description: req.body.description
 
   })
-  console.log(req.body);
+
+  // console.log(req.body);
   newQues.save()
   .then(output => {
     displayResults(output.ops)
@@ -130,7 +169,7 @@ app.post('/addQuestions', function (req, res) {
   })
   // debug code (output request body)
   res.render('questions', {
-    title: 'Database Updated!' + req.body
+    title: 'Database Updated!' + (parseInt(req.body.question)+1)
   })
 })
 

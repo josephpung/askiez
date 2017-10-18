@@ -1,8 +1,24 @@
-{{#each threads}}
-{{!-- <p>{{this.description}}| {{this._id}}</p> --}}
+{{!-- {{#each threads}}
+<div>
 <a href={{this.id}}>{{this.question}}</a>
-{{!-- <form method="POST" action= `${{{this.id}}}`>
-  <label for="animalType">{{this.description}}</label>
-  <input id="animalType" type="submit">
-</form> --}}
+<div class="buttons">
+<button class="up" data={{this._id}}>Upvote</button>
+<p id={{this._id}} >{{this.totalVotes}}</p>
+<button class="down" data={{this._id}}>Downvote</button>
+</div>
+</div>
+{{/each}} --}}
+
+{{#each threads}}
+<table>
+  <tr>
+    <td><div class="buttons">
+    <button class="up" data={{this._id}}>Upvote</button>
+    <p id={{this._id}} >{{this.totalVotes}}</p>
+    <button class="down" data={{this._id}}>Downvote</button>
+    </div></td>
+    <td><a href={{this.id}}>{{this.question}}</a></td>
+  </tr>
+</table>
+<div>==============================================================================</div>
 {{/each}}

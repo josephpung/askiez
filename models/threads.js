@@ -30,6 +30,7 @@ const threadSchema = new mongoose.Schema({
   question: { type: String, required: true },
   description: { type: String, required: true },
   answer: [ answerSchema ],
+  totalVotes : {type: Number, default: 0},
   upvotes: { type: String, default: 0},
   downvotes: { type: String, default: 0},
   creator: { type: String, default: "anonymous"}
