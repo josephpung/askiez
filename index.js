@@ -28,8 +28,8 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 
 //testing connection
-app.get("/questions",(req,res)=>{
-  res.render("questions")
+app.get("/addQuestions",(req,res)=>{
+  res.render("addquestions")
 })
 
 app.get("/landingPage", (req,res)=>{
@@ -58,7 +58,7 @@ app.listen(5000, () => {
   console.log(`Server is running on port 5000`)
 })
 
-app.get(`/:id`, (req, res) => {
+app.get(`/questions/:id`, (req, res) => {
 
   Thread.findById({_id: req.params.id}, function (err, thread) {
     if (err) {
@@ -76,7 +76,7 @@ app.get(`/:id`, (req, res) => {
 
 })
 
-app.post('/registeruser', function (req, res) {
+app.post('/landingPage', function (req, res) {
 
   let newUser = new User({
     name: req.body.name,
