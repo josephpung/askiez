@@ -52,13 +52,16 @@ app.get("/", (req,res)=>{
 
 })
 
+app.get("/profile/:slug",(req,res)=>{
 
+  User.findOne({slug: req.params.slug})
+  .then(user=>{
+    res.send(user)
+  })
 
-app.listen(5000, () => {
-  console.log(`Server is running on port 5000`)
 })
 
-app.get(`/questions/:id`, (req, res) => {
+app.get(`/thread/:id`, (req, res) => {
 
   Thread.findById({_id: req.params.id}, function (err, thread) {
     if (err) {
@@ -89,9 +92,6 @@ app.post('/landingPage', function (req, res) {
   .then(output => {
     displayResults(output.ops)
   })
-  .catch(err=>{
-    console.log(err);
-  })
   // debug code (output request body)
   res.render('landingPage', {
     title: 'Database Updated!'
@@ -99,7 +99,7 @@ app.post('/landingPage', function (req, res) {
 })
 
 app.post('/addAnswer', function (req,res) {
-  console.log(req.body);
+  console.log(req.body)
   // res.send(req.body.userinput)
   // Thread.find({_id: req.body._id})
   Thread.findById(req.body.id, (err, result)=> {
@@ -108,10 +108,10 @@ app.post('/addAnswer', function (req,res) {
       return;
     }
 
-    result.answer.push({answer: req.body.userinput})
-    console.log(result);
+    result.answer.push({answer: req.body.userinput, author: req.body.id})
     result.save()
   })
+  res.redirect(`${req.body.id}`)
 })
 /////////////////////////////////////
 
@@ -180,19 +180,14 @@ app.post('/addQuestions', function (req, res) {
 // ================== Testing mongoose user creation and find
 
 
-
-// //save the user
-// newUser.save(function (err) {
-//   if (err) {
-//     console.log(err);
-//     return;
-//   }
-//   console.log('User created!');
-// })
 User.find({}, function (err, users) {
   if (err) {
     console.log(err)
     return;
   }
   console.log(users)
+})
+
+app.listen(5000, () => {
+  console.log(`Server is running on port 5000`)
 })
