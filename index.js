@@ -55,7 +55,7 @@ app.get("/", (req,res)=>{
 
 
 app.listen(5000, () => {
-  console.log(`Server is running on port 4000`)
+  console.log(`Server is running on port 5000`)
 })
 
 app.get(`/:id`, (req, res) => {
@@ -79,6 +79,7 @@ app.get(`/:id`, (req, res) => {
 app.post('/registeruser', function (req, res) {
 
   let newUser = new User({
+    name: req.body.name,
     email: req.body.username,
     password: req.body.password
 
@@ -87,6 +88,9 @@ app.post('/registeruser', function (req, res) {
   newUser.save()
   .then(output => {
     displayResults(output.ops)
+  })
+  .catch(err=>{
+    console.log(err);
   })
   // debug code (output request body)
   res.render('landingPage', {
