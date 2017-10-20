@@ -54,6 +54,12 @@ app.get("/error", (err, res)=>{
   res.render("admin_error")
 })
 
+app.get("/search", (err,res)=>{
+  res.render("search",{
+    title: "Search Page"
+  })
+})
+
 // ================== Testing mongoose user creation and find
 
 

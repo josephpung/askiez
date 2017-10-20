@@ -19,4 +19,9 @@ $(function () {
     })
     $(this).attr("downvotes", parseInt(currentDown) +1)
   })
+
+
+
+
+
 })
