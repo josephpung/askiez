@@ -13,9 +13,9 @@
 <table>
   <tr>
     <td><div class="buttons">
-    <button class="up" data={{this._id}}>Upvote</button>
+    <button class="up" data={{this._id}} upvotes = {{this.upVotes}}>Upvote</button>
     <p id={{this._id}} >{{this.totalVotes}}</p>
-    <button class="down" data={{this._id}}>Downvote</button>
+    <button class="down" data={{this._id}} downvotes = {{this.downVotes}}>Downvote</button>
     </div></td>
     <td><a href="/thread/{{this.id}}">{{this.question}}</a></td>
   </tr>

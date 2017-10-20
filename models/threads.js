@@ -31,10 +31,11 @@ const threadSchema = new mongoose.Schema({
   description: { type: String, required: true },
   answer: [ answerSchema ],
   totalVotes : {type: Number, default: 0},
-  upvotes: { type: Number, default: 0},
-  downvotes: { type: Number, default: 0},
+  upVotes: { type: Number, default: 0},
+  downVotes: { type: Number, default: 0},
   creator: { type: String, default: "anonymous"}
 })
+
 
 const Thread = mongoose.model('threads', threadSchema)
 

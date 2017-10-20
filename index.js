@@ -15,9 +15,19 @@ app.use(bodyParser.urlencoded({
   extended: true
 }))
 
-const User = require('./models/user');
-const Thread = require('./models/threads');
+// const User = require('./models/user')
+// const Thread = require('./models/threads')
+// const Admin = require('./models/admin')
 
+//require all route files
+const register_routes = require("./routes/register_routes")
+const question_routes = require("./routes/question_routes")
+const home = require("./routes/home")
+const admin_routes = require("./routes/admin_routes")
+const thread = require("./routes/thread")
+const answer_routes = require("./routes/answer_routes")
+const profile_routes = require("./routes/profile_routes")
+const vote_routes = require("./routes/vote_routes")
 // ==================================[]================================== //
 
 // Setting up hbs
@@ -26,167 +36,26 @@ app.set('view engine', 'handlebars')
 
 app.use(express.static(path.join(__dirname, 'public')))
 
-
-//testing connection
-app.get("/addQuestions",(req,res)=>{
-  res.render("addquestions")
-})
-
-app.get("/landingPage", (req,res)=>{
-
-  res.render('landingPage')
-})
-
-app.get("/", (req,res)=>{
-  Thread.find({}, function (err, data) {
-    if (err) {
-      console.log(err)
-      return;
-    }
-    res.render('home',{
-      title: "Questions In DB",
-      threads : data
-
-    })
-  })
-
-})
-
-app.get("/profile/:slug",(req,res)=>{
-
-  User.findOne({slug: req.params.slug})
-  .then(user=>{
-    res.send(user)
-  })
-
-})
-
-app.get(`/thread/:id`, (req, res) => {
-
-  Thread.findById({_id: req.params.id}, function (err, thread) {
-    if (err) {
-      console.log(err)
-      return;
-    }
-    console.log("=====");
-    console.log(thread)
-    res.render("thread", {
-      data: thread
-
-    })
-  })
+// testing connection
 
 
-})
 
-app.post('/landingPage', function (req, res) {
-
-  let newUser = new User({
-    name: req.body.name,
-    email: req.body.username,
-    password: req.body.password
-
-  })
-
-  newUser.save()
-  .then(output => {
-    displayResults(output.ops)
-  })
-  // debug code (output request body)
-  res.render('landingPage', {
-    title: 'Database Updated!'
-  })
-})
-
-app.post('/addAnswer', function (req,res) {
-  console.log(req.body)
-  // res.send(req.body.userinput)
-  // Thread.find({_id: req.body._id})
-  Thread.findById(req.body.id, (err, result)=> {
-    if (err) {
-      console.log(err)
-      return;
-    }
-
-    result.answer.push({answer: req.body.userinput, author: req.body.id})
-    result.save()
-  })
-  res.redirect(`${req.body.id}`)
-})
-/////////////////////////////////////
-
-app.post("/upvote", function(req, res){
+app.use("/addQuestions",question_routes)
+app.use("/landingPage",register_routes)
+app.use("/", home)
+app.use("/admin", admin_routes)
+app.use("/thread", thread)
+app.use("/addAnswer", answer_routes)
+app.use("/profile", profile_routes)
+app.use("/vote", vote_routes)
 
 
-  var inc = parseFloat(req.body.current)
-  console.log(inc,"CurrentNumIndex.js");
-   res.setHeader("Content-Type", "application/json");
-   inc += parseFloat(req.body.changeBy);
-   res.send(JSON.stringify(inc))
-   console.log(req.body)
-   Thread.findByIdAndUpdate(req.body.obj, { $set: { totalVotes: inc }}, (err, output)=> {
-  if (err) console.log(err);
-    console.log(output);
-});
-
-})
-app.post("/downvote", function(req, res){
-
-
-  var dec = parseFloat(req.body.current)
-   res.setHeader("Content-Type", "application/json");
-   dec -= parseFloat(req.body.changeBy);
-   res.send(JSON.stringify(dec))
-   console.log(req.body)
-   Thread.findByIdAndUpdate(req.body.obj, { $set: { totalVotes: dec }}, (err, output)=> {
-  if (err) console.log(err);
-    console.log(output);
-});
-
-})
-
- function findVotes(id){
-   Thread.findById(id,(err, result)=>{
-     if (err){
-       console.log(err);
-     }
-     return result.totalVotes
-
-
-   })
- }
-/////////////////////////////////////
-
-app.post('/addQuestions', function (req, res) {
-
-  let newQues = new Thread({
-    question: req.body.question,
-    description: req.body.description
-
-  })
-
-  // console.log(req.body);
-  newQues.save()
-  .then(output => {
-    displayResults(output.ops)
-
-  })
-  // debug code (output request body)
-  res.render('questions', {
-    title: 'Database Updated!' + (parseInt(req.body.question)+1)
-  })
+app.get("/error", (err, res)=>{
+  res.render("admin_error")
 })
 
 // ================== Testing mongoose user creation and find
 
-
-User.find({}, function (err, users) {
-  if (err) {
-    console.log(err)
-    return;
-  }
-  console.log(users)
-})
 
 app.listen(5000, () => {
   console.log(`Server is running on port 5000`)

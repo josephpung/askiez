@@ -10,9 +10,9 @@
 <table>
   <tr>
     <td><div class="buttons">
-    <button class="up" data={{data._id}}>Upvote</button>
-    <p id={{data._id}} >{{data.totalVotes}}</p>
-    <button class="down" data={{data._id}}>Downvote</button>
+    <button class="up" data={{data._id}} upvotes = {{data.upVotes}} >Upvote</button>
+    <p id={{data._id}}  >{{data.totalVotes}}</p>
+    <button class="down" data={{data._id}} downvotes = {{data.downVotes}} >Downvote</button>
     </div></td>
     <td><p>{{data.question}}</p>
     <p>{{data.description}}</p></td>
