@@ -2,16 +2,16 @@ const exphbs = require('express-handlebars')
 const express = require('express')
 const path = require('path')
 const bodyParser = require('body-parser')
-require("dotenv").config({silent: true})
-
+const session = require("express-session")
 const quoteApiKey = process.env.QUOTEAPI
-console.log(`this is the key: ${quoteApiKey}`)
-
-
-const app = express()
 const dbUrl = process.env.MONGODB_URI || 'mongodb://localhost/project'
 const port = process.env.PORT || 5000
+const app = express()
 
+require("dotenv").config({silent: true})
+
+
+// console.log(`this is the key: ${quoteApiKey}`)
 const mongoose = require('mongoose')
 mongoose.connect(dbUrl , {
   useMongoClient: true
@@ -42,6 +42,13 @@ const vote_routes = require("./routes/vote_routes")
 // Setting up hbs
 app.engine('handlebars', exphbs({defaultLayout: 'main'}))
 app.set('view engine', 'handlebars')
+
+// Setting up Sessions
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true
+}))
 
 app.use(express.static(path.join(__dirname, 'public')))
 
