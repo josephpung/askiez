@@ -2,6 +2,11 @@ const exphbs = require('express-handlebars')
 const express = require('express')
 const path = require('path')
 const bodyParser = require('body-parser')
+require("dotenv").config({silent: true})
+
+const quoteApiKey = process.env.QUOTEAPI
+console.log(`this is the key: ${quoteApiKey}`)
+
 
 const app = express()
 const dbUrl = process.env.MONGODB_URI || 'mongodb://localhost/project'
