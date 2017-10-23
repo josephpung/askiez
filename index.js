@@ -4,6 +4,7 @@ const path = require('path')
 const bodyParser = require('body-parser')
 const session = require("express-session")
 const MongoStore = require("connect-mongo")(session)
+const passport = require("./config/ppConfig")
 const quoteApiKey = process.env.QUOTEAPI
 const dbUrl =
 process.env.NODE_ENV === 'production' ? process.env.MONGODB_URI : 'mongodb://localhost/project'
@@ -28,6 +29,9 @@ app.use(session({
   saveUninitialized: true, //saves session and stores it in DB
   store: new MongoStore({ mongooseConnection: mongoose.connection }) // store it in MongoDB, this requires mongo-connect to work
 }))
+
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
