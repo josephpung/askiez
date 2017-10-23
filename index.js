@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({
   extended: true
 }))
 
-// const User = require('./models/user')
+const User = require('./models/user')
 // const Thread = require('./models/threads')
 // const Admin = require('./models/admin')
 
@@ -60,6 +60,18 @@ app.get("/search", (err,res)=>{
   })
 })
 
+app.post("/search", (req, res)=>{
+  // res.send(req.body.keyword)
+
+  const keyword = req.body.keyword
+
+  User.find({
+    name: new RegExp(keyword, "i")
+  })
+  .then(results=>{
+    res.send(results)
+  })
+})
 // ================== Testing mongoose user creation and find
 
 

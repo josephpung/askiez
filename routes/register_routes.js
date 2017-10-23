@@ -41,6 +41,7 @@ router.post("/login", (req,res)=>{
           console.log("Comparison failed")
           return res.redirect("/landingPage")
         }
+        
         console.log("Comparison Success!");
         res.redirect("/")
       })
