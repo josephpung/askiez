@@ -3,8 +3,10 @@ const express = require('express')
 const path = require('path')
 const bodyParser = require('body-parser')
 const session = require("express-session")
+const MongoStore = require("connect-mongo")(session)
 const quoteApiKey = process.env.QUOTEAPI
-const dbUrl = process.env.MONGODB_URI || 'mongodb://localhost/project'
+const dbUrl =
+process.env.NODE_ENV === 'production' ? process.env.MONGODB_URI : 'mongodb://localhost/project'
 const port = process.env.PORT || 5000
 const app = express()
 
@@ -16,12 +18,21 @@ const mongoose = require('mongoose')
 mongoose.connect(dbUrl , {
   useMongoClient: true
 })
-mongoose.Promise = global.Promise
+mongoose.Promise = global.Promise //allows us to use .then
+
+
+// Setting up Sessions AFTER connecting to mongoose
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true, //saves session and stores it in DB
+  store: new MongoStore({ mongooseConnection: mongoose.connection }) // store it in MongoDB, this requires mongo-connect to work
+}))
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
   extended: true
-}));
+}))
  // set port to be env if not configured
 
 const User = require('./models/user')
@@ -43,12 +54,7 @@ const vote_routes = require("./routes/vote_routes")
 app.engine('handlebars', exphbs({defaultLayout: 'main'}))
 app.set('view engine', 'handlebars')
 
-// Setting up Sessions
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: true
-}))
+
 
 app.use(express.static(path.join(__dirname, 'public')))
 
