@@ -4,7 +4,7 @@ const path = require('path')
 const bodyParser = require('body-parser')
 
 const app = express()
-const dbUrl = 'mongodb://localhost/project'
+const dbUrl = process.env.MONGODB_URI || 'mongodb://localhost/project'
 const port = process.env.PORT || 5000
 
 const mongoose = require('mongoose')
@@ -16,7 +16,7 @@ mongoose.Promise = global.Promise
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
   extended: true
-}))
+}));
  // set port to be env if not configured
 
 const User = require('./models/user')
