@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt')
 
 
 const Admin = require('../models/admin')
-const adminCode = "2424"
+const adminCode = process.env.ADMIN_CODE
 
 router.get('/', (req, res) => {
   res.render('admin',{
